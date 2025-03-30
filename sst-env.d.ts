@@ -22,6 +22,10 @@ declare module "sst" {
       "bastion": string
       "type": "sst.aws.Vpc"
     }
+    "MyWeb": {
+      "type": "sst.aws.StaticSite"
+      "url": string
+    }
   }
 }
 /// <reference path="sst-env.d.ts" />

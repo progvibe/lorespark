@@ -13,6 +13,7 @@ export default $config({
     await import("./infra/vpc");
     const { rds } = await import("./infra/rds");
     await import("./infra/api");
+    await import("./infra/web");
     new sst.x.DevCommand("Studio", {
       link: [rds],
       dev: {
