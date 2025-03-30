@@ -1,0 +1,8 @@
+{
+  "name": "@lorespark/functions",
+  "version": "0.0.0",
+  "type": "module",
+  "dependencies": {
+    "hono": "^4.7.5"
+  }
+}
