@@ -9,6 +9,9 @@ import {
   OrnateCard,
   OrnateFrame,
 } from "@/components/ui-elements";
+import { useQuery } from "@tanstack/react-query";
+
+import { fetchHomePagePortraits } from "@/queries/portraits";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
@@ -18,6 +21,11 @@ function RouteComponent() {
   const [showCreator, setShowCreator] = useState(false);
   const [characterData, setCharacterData] = useState<any>(null);
   const [prompt, setPrompt] = useState("");
+
+  const { isPending, error, data } = useQuery({
+    queryKey: ["portraits"],
+    queryFn: fetchHomePagePortraits,
+  });
 
   const handleCharacterCreated = (data: any) => {
     setCharacterData(data);
@@ -168,57 +176,56 @@ function RouteComponent() {
               </div>
 
               {/* Community section */}
-              <div className="pt-8">
-                <div className="flex items-center justify-between mb-6">
-                  <h2
-                    className="text-3xl font-bold text-[#ffc866]"
-                    style={{ textShadow: "0 0 5px rgba(255, 200, 102, 0.5)" }}
-                  >
-                    Tales from the Realm
-                  </h2>
+              {isPending ? (
+                <div className="pt-8">
+                  <div className="flex items-center justify-center">
+                    <div className="text-[#4cc1e6] text-xl animate-pulse">
+                      The bard is composing your tale...
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="pt-8">
+                  <div className="flex items-center justify-between mb-6">
+                    <h2
+                      className="text-3xl font-bold text-[#ffc866]"
+                      style={{ textShadow: "0 0 5px rgba(255, 200, 102, 0.5)" }}
+                    >
+                      Tales from the Realm
+                    </h2>
 
-                  <span
-                    className="text-[#ffc866] hover:text-[#ffd686] text-sm flex items-center font-bold"
-                    style={{ textShadow: "0 0 5px rgba(255, 200, 102, 0.3)" }}
-                  >
-                    View All <ArrowRight className="ml-1 h-3 w-3" />
-                  </span>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {[
-                    {
-                      name: "Thorne the Unbroken",
-                      creator: "Sage of the North",
-                    },
-                    { name: "Lady Elindra", creator: "Whispers in Shadow" },
-                    { name: "Grimjaw Ironfist", creator: "Mountain King" },
-                    {
-                      name: "Seraphina Moonshadow",
-                      creator: "Stardust Weaver",
-                    },
-                  ].map((char, i) => (
-                    <OrnateCard key={i}>
-                      <div>
-                        <div className="aspect-square relative">
-                          <img
-                            src={`/placeholder.svg?height=300&width=300&text=${char.name}`}
-                            alt={char.name}
-                            className="object-cover w-full h-full"
-                          />
+                    <span
+                      className="text-[#ffc866] hover:text-[#ffd686] text-sm flex items-center font-bold"
+                      style={{ textShadow: "0 0 5px rgba(255, 200, 102, 0.3)" }}
+                    >
+                      View All <ArrowRight className="ml-1 h-3 w-3" />
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {data.map((char, i) => (
+                      <OrnateCard key={i}>
+                        <div>
+                          <div className="aspect-square relative">
+                            <img
+                              src={char.imageUrl}
+                              alt={char.name}
+                              className="object-cover w-full h-full"
+                            />
+                          </div>
+                          <div className="p-3">
+                            <h3 className="font-medium text-[#ffc866] truncate">
+                              {char.name}
+                            </h3>
+                            <p className="text-xs text-[#4cc1e6]/70">
+                              Created by {char.creator}
+                            </p>
+                          </div>
                         </div>
-                        <div className="p-3">
-                          <h3 className="font-medium text-[#ffc866] truncate">
-                            {char.name}
-                          </h3>
-                          <p className="text-xs text-[#4cc1e6]/70">
-                            Created by {char.creator}
-                          </p>
-                        </div>
-                      </div>
-                    </OrnateCard>
-                  ))}
+                      </OrnateCard>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           ) : showCreator ? (
             <CharacterCreator onComplete={handleCharacterCreated} />

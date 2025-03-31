@@ -8,6 +8,7 @@ const app = new Hono();
 
 app.get("/portrait", async (c) => {
   const results = await db.select().from(portraits);
+  console.log(results);
   return c.json(results);
 });
 
