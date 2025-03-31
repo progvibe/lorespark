@@ -10,6 +10,10 @@ declare module "sst" {
       "type": "sst.aws.Function"
       "url": string
     }
+    "MyAuth": {
+      "type": "sst.aws.Auth"
+      "url": string
+    }
     "MyPostgres": {
       "database": string
       "host": string

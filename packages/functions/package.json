@@ -3,6 +3,12 @@
   "version": "0.0.0",
   "type": "module",
   "dependencies": {
-    "hono": "^4.7.5"
+    "hono": "^4.7.5",
+    "@openauthjs/openauth": "^0.3.6",
+    "sst": "*",
+    "valibot": "^1.0.0-beta.14"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8"
   }
 }

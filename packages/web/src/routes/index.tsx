@@ -1,29 +1,32 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { Textarea } from "@/components/ui/textarea";
-import CharacterCreator from "@/components/character-creator";
-import CharacterResult from "@/components/character-result";
-import { ArrowRight, FileText, Users, Camera } from "lucide-react";
+import { createFileRoute } from '@tanstack/react-router';
+import { useState } from 'react';
+import { useAuth } from '@/AuthContext';
+import { Textarea } from '@/components/ui/textarea';
+import CharacterCreator from '@/components/character-creator';
+import CharacterResult from '@/components/character-result';
+import { ArrowRight, FileText, Users, Camera } from 'lucide-react';
 import {
   OrnateButton,
   OrnateCard,
   OrnateFrame,
-} from "@/components/ui-elements";
-import { useQuery } from "@tanstack/react-query";
+} from '@/components/ui-elements';
+import { useQuery } from '@tanstack/react-query';
 
-import { fetchHomePagePortraits } from "@/queries/portraits";
+import { fetchHomePagePortraits } from '@/queries/portraits';
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute('/')({
   component: RouteComponent,
 });
 
 function RouteComponent() {
   const [showCreator, setShowCreator] = useState(false);
   const [characterData, setCharacterData] = useState<any>(null);
-  const [prompt, setPrompt] = useState("");
+  const [prompt, setPrompt] = useState('');
+
+  const auth = useAuth();
 
   const { isPending, error, data } = useQuery({
-    queryKey: ["portraits"],
+    queryKey: ['portraits'],
     queryFn: fetchHomePagePortraits,
   });
 
@@ -32,7 +35,9 @@ function RouteComponent() {
     setShowCreator(false);
   };
 
-  return (
+  return !auth.loaded ? (
+    <div>loading...</div>
+  ) : (
     <div className="min-h-screen flex flex-col bg-[#030a13] relative">
       {/* Background border */}
       <div className="absolute inset-0 pointer-events-none">
@@ -62,8 +67,8 @@ function RouteComponent() {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <OrnateButton>Sign In</OrnateButton>
-            <OrnateButton>Sign Up</OrnateButton>
+            <OrnateButton onClick={auth.login}>Sign In</OrnateButton>
+            <OrnateButton onClick={auth.login}>Sign Up</OrnateButton>
           </div>
         </div>
       </header>
@@ -85,8 +90,8 @@ function RouteComponent() {
                   className="text-5xl md:text-7xl font-bold text-[#ffc866] tracking-wide"
                   style={{
                     textShadow:
-                      "0 0 10px rgba(255, 200, 102, 0.5), 0 0 20px rgba(255, 200, 102, 0.3)",
-                    letterSpacing: "0.05em",
+                      '0 0 10px rgba(255, 200, 102, 0.5), 0 0 20px rgba(255, 200, 102, 0.3)',
+                    letterSpacing: '0.05em',
                   }}
                 >
                   Forge your legendary tale
@@ -113,7 +118,7 @@ function RouteComponent() {
                       setShowCreator(true);
                     }}
                   >
-                    Spark Your Legend{" "}
+                    Spark Your Legend{' '}
                     <ArrowRight className="ml-2 h-4 w-4 inline" />
                   </OrnateButton>
                 </div>
@@ -128,7 +133,7 @@ function RouteComponent() {
                     </div>
                     <h3
                       className="font-bold text-[#ffc866] text-xl"
-                      style={{ textShadow: "0 0 5px rgba(255, 200, 102, 0.5)" }}
+                      style={{ textShadow: '0 0 5px rgba(255, 200, 102, 0.5)' }}
                     >
                       The Questionnaire
                     </h3>
@@ -146,7 +151,7 @@ function RouteComponent() {
                     </div>
                     <h3
                       className="font-bold text-[#ffc866] text-xl"
-                      style={{ textShadow: "0 0 5px rgba(255, 200, 102, 0.5)" }}
+                      style={{ textShadow: '0 0 5px rgba(255, 200, 102, 0.5)' }}
                     >
                       The Tavern
                     </h3>
@@ -163,7 +168,7 @@ function RouteComponent() {
                     </div>
                     <h3
                       className="font-bold text-[#ffc866] text-xl"
-                      style={{ textShadow: "0 0 5px rgba(255, 200, 102, 0.5)" }}
+                      style={{ textShadow: '0 0 5px rgba(255, 200, 102, 0.5)' }}
                     >
                       The Portrait
                     </h3>
@@ -176,7 +181,7 @@ function RouteComponent() {
               </div>
 
               {/* Community section */}
-              {isPending ? (
+              {isPending || !data ? (
                 <div className="pt-8">
                   <div className="flex items-center justify-center">
                     <div className="text-[#4cc1e6] text-xl animate-pulse">
@@ -189,14 +194,14 @@ function RouteComponent() {
                   <div className="flex items-center justify-between mb-6">
                     <h2
                       className="text-3xl font-bold text-[#ffc866]"
-                      style={{ textShadow: "0 0 5px rgba(255, 200, 102, 0.5)" }}
+                      style={{ textShadow: '0 0 5px rgba(255, 200, 102, 0.5)' }}
                     >
                       Tales from the Realm
                     </h2>
 
                     <span
                       className="text-[#ffc866] hover:text-[#ffd686] text-sm flex items-center font-bold"
-                      style={{ textShadow: "0 0 5px rgba(255, 200, 102, 0.3)" }}
+                      style={{ textShadow: '0 0 5px rgba(255, 200, 102, 0.3)' }}
                     >
                       View All <ArrowRight className="ml-1 h-3 w-3" />
                     </span>
@@ -217,7 +222,7 @@ function RouteComponent() {
                               {char.name}
                             </h3>
                             <p className="text-xs text-[#4cc1e6]/70">
-                              Created by {char.creator}
+                              Created by {char.name}
                             </p>
                           </div>
                         </div>
@@ -235,7 +240,7 @@ function RouteComponent() {
               onReset={() => {
                 setCharacterData(null);
                 setShowCreator(false);
-                setPrompt("");
+                setPrompt('');
               }}
             />
           )}

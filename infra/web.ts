@@ -1,4 +1,5 @@
 import { api } from "./api";
+import { auth } from "./auth";
 
 export const web = new sst.aws.StaticSite("MyWeb", {
   path: "packages/web",
@@ -8,5 +9,6 @@ export const web = new sst.aws.StaticSite("MyWeb", {
   },
   environment: {
     VITE_API_URL: api.url,
+    VITE_AUTH_URL: auth.url,
   },
 });

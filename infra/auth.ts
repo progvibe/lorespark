@@ -1,3 +1,10 @@
+import { rds } from "./rds";
+import { vpc } from "./vpc";
+
 export const auth = new sst.aws.Auth("MyAuth", {
-  issuer: "packages/functions/src/auth.handler",
+  issuer: {
+    handler: "packages/functions/src/auth.handler",
+    link: [rds],
+    vpc,
+  },
 });

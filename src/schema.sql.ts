@@ -5,3 +5,8 @@ export const portraits = pgTable("portraits", {
   name: text("name"),
   imageUrl: text("image_url").notNull(),
 });
+
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull(),
+});
