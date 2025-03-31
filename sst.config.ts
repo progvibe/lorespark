@@ -14,6 +14,8 @@ export default $config({
     const { rds } = await import("./infra/rds");
     await import("./infra/api");
     await import("./infra/web");
+    await import("./infra/auth");
+    await import("./infra/secrets");
     new sst.x.DevCommand("Studio", {
       link: [rds],
       dev: {

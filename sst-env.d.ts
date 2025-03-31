@@ -5,6 +5,10 @@
 
 declare module "sst" {
   export interface Resource {
+    "FalKey": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
     "MyApi": {
       "name": string
       "type": "sst.aws.Function"

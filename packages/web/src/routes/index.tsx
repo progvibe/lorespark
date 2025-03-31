@@ -11,6 +11,7 @@ import {
   OrnateFrame,
 } from '@/components/ui-elements';
 import { useQuery } from '@tanstack/react-query';
+import { fal } from '@fal-ai/client';
 
 import { fetchHomePagePortraits } from '@/queries/portraits';
 
@@ -33,6 +34,22 @@ function RouteComponent() {
   const handleCharacterCreated = (data: any) => {
     setCharacterData(data);
     setShowCreator(false);
+  };
+
+  const submitPrompt = async () => {
+    const result = await fal.subscribe('fal-ai/flux-pro/v1.1-ultra', {
+      input: {
+        prompt: prompt,
+      },
+      logs: true,
+      onQueueUpdate: (update) => {
+        if (update.status === 'IN_PROGRESS') {
+          update.logs.map((log) => log.message).forEach(console.log);
+        }
+      },
+    });
+    console.log(result.data);
+    console.log(result.requestId);
   };
 
   return !auth.loaded ? (
@@ -115,7 +132,7 @@ function RouteComponent() {
                   <OrnateButton
                     disabled={!prompt.trim()}
                     onClick={() => {
-                      setShowCreator(true);
+                      submitPrompt();
                     }}
                   >
                     Spark Your Legend{' '}
