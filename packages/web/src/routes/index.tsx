@@ -84,8 +84,14 @@ function RouteComponent() {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <OrnateButton onClick={auth.login}>Sign In</OrnateButton>
-            <OrnateButton onClick={auth.login}>Sign Up</OrnateButton>
+            {auth.loggedIn ? (
+              <OrnateButton onClick={auth.logout}>Sign Out</OrnateButton>
+            ) : (
+              <>
+                <OrnateButton onClick={auth.login}>Sign In</OrnateButton>
+                <OrnateButton onClick={auth.login}>Sign Up</OrnateButton>
+              </>
+            )}
           </div>
         </div>
       </header>
