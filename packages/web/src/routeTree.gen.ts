@@ -11,16 +11,9 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as IndexOldImport } from './routes/index-old'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
-
-const IndexOldRoute = IndexOldImport.update({
-  id: '/index-old',
-  path: '/index-old',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -39,13 +32,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/index-old': {
-      id: '/index-old'
-      path: '/index-old'
-      fullPath: '/index-old'
-      preLoaderRoute: typeof IndexOldImport
-      parentRoute: typeof rootRoute
-    }
   }
 }
 
@@ -53,37 +39,32 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/index-old': typeof IndexOldRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/index-old': typeof IndexOldRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/index-old': typeof IndexOldRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/index-old'
+  fullPaths: '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/index-old'
-  id: '__root__' | '/' | '/index-old'
+  to: '/'
+  id: '__root__' | '/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  IndexOldRoute: typeof IndexOldRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  IndexOldRoute: IndexOldRoute,
 }
 
 export const routeTree = rootRoute
@@ -96,15 +77,11 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
-        "/index-old"
+        "/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
-    },
-    "/index-old": {
-      "filePath": "index-old.tsx"
     }
   }
 }
