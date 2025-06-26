@@ -9,6 +9,17 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
+    "LoresparkDB": {
+      "clusterArn": string
+      "database": string
+      "host": string
+      "password": string
+      "port": number
+      "reader": string
+      "secretArn": string
+      "type": "sst.aws.Aurora"
+      "username": string
+    }
     "MyApi": {
       "name": string
       "type": "sst.aws.Function"
@@ -17,14 +28,6 @@ declare module "sst" {
     "MyAuth": {
       "type": "sst.aws.Auth"
       "url": string
-    }
-    "MyPostgres": {
-      "database": string
-      "host": string
-      "password": string
-      "port": number
-      "type": "sst.aws.Postgres"
-      "username": string
     }
     "MyVpc": {
       "bastion": string

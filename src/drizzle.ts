@@ -4,11 +4,11 @@ import { Resource } from "sst";
 import * as schema from "./schema.sql";
 
 const pool = new Pool({
-  host: Resource.MyPostgres.host,
-  port: Resource.MyPostgres.port,
-  user: Resource.MyPostgres.username,
-  password: Resource.MyPostgres.password,
-  database: Resource.MyPostgres.database,
+  host: Resource.LoresparkDB.host,
+  port: Resource.LoresparkDB.port,
+  user: Resource.LoresparkDB.username,
+  password: Resource.LoresparkDB.password,
+  database: Resource.LoresparkDB.database,
 });
 
 export const db = drizzle(pool, { schema });

@@ -9,11 +9,13 @@ import { eq } from "drizzle-orm";
 async function getUser(email: string) {
   // Create user if they don't exist, return user ID
   const results = await db.select().from(users).where(eq(users.email, email));
+  console.log(results);
   if (results.length === 0) {
     const returned = await db
       .insert(users)
       .values({ email })
       .returning({ id: users.id });
+    console.log(returned);
     return returned[0].id.toString();
   }
   return results[0].id.toString();

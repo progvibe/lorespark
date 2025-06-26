@@ -5,19 +5,19 @@ export default $config({
     return {
       name: "lorespark",
       removal: input?.stage === "production" ? "retain" : "remove",
-      protect: ["production"].includes(input?.stage),
+      protect: false,
       home: "aws",
     };
   },
   async run() {
     await import("./infra/vpc");
-    const { rds } = await import("./infra/rds");
+    const { aurora } = await import("./infra/aurora");
     await import("./infra/api");
     await import("./infra/web");
     await import("./infra/auth");
     await import("./infra/secrets");
     new sst.x.DevCommand("Studio", {
-      link: [rds],
+      link: [aurora],
       dev: {
         command: "npx drizzle-kit studio",
       },
