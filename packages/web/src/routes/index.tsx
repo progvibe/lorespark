@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useAuth } from '@/AuthContext';
 import { Textarea } from '@/components/ui/textarea';
@@ -11,7 +11,6 @@ import {
   OrnateFrame,
 } from '@/components/ui-elements';
 import { useQuery } from '@tanstack/react-query';
-import { fal } from '@fal-ai/client';
 
 import { fetchHomePagePortraits } from '@/queries/portraits';
 
@@ -23,6 +22,7 @@ function RouteComponent() {
   const [showCreator, setShowCreator] = useState(false);
   const [characterData, setCharacterData] = useState<any>(null);
   const [prompt, setPrompt] = useState('');
+  const navigate = useNavigate();
 
   const auth = useAuth();
 
@@ -37,19 +37,13 @@ function RouteComponent() {
   };
 
   const submitPrompt = async () => {
-    const result = await fal.subscribe('fal-ai/flux-pro/v1.1-ultra', {
-      input: {
-        prompt: prompt,
-      },
-      logs: true,
-      onQueueUpdate: (update) => {
-        if (update.status === 'IN_PROGRESS') {
-          update.logs.map((log) => log.message).forEach(console.log);
-        }
+    // Navigate to result page with prompt in search params
+    navigate({
+      to: '/result',
+      search: {
+        prompt,
       },
     });
-    console.log(result.data);
-    console.log(result.requestId);
   };
 
   return !auth.loaded ? (
@@ -259,12 +253,12 @@ function RouteComponent() {
             <CharacterCreator onComplete={handleCharacterCreated} />
           ) : (
             <CharacterResult
-              characterData={characterData}
               onReset={() => {
                 setCharacterData(null);
                 setShowCreator(false);
                 setPrompt('');
               }}
+              imageUrl={null}
             />
           )}
         </div>
